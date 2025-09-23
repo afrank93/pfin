@@ -8,7 +8,7 @@ _Updated: 2025-09-23_
 ## 0) Bootstrap & Housekeeping
 - [x] Create a new private repo and push an empty `main` branch
 - [ ] Decide Python version (>=3.11) and install **uv**
-- [ ] Enable branch protection on `main` (PRs required, status checks required)
+- [x] Enable branch protection on `main` (PRs required, status checks required)
 - [ ] Add a project board with Milestones A–F
 
 ---
