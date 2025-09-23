@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coach-app"
+version = "0.1.0"
+description = "Elite Minor Hockey Coach App — MVP"
+authors = [
+  { name = "Coach App Team" }
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "sqlmodel",
+  "jinja2",
+  "python-multipart",
+  "weasyprint",
+  "pydantic-settings",
+  "httpx",
+  "pytest",
+  "pytest-asyncio",
+  "ruff",
+  "mypy",
+  "types-setuptools",
+]
+
+[tool.uv]
+# Allow uv to understand project metadata
+managed = true
+
+[tool.pytest.ini_options]
+# Placeholder to ensure pytest discovers tests later
+addopts = "-q"
