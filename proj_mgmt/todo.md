@@ -24,7 +24,7 @@ _Updated: 2025-09-23_
   - [ ] ✅ DoD: `uv run ruff check` passes; `uv run mypy` passes; `uv run pytest` runs with 0 tests
 - [ ] A1.2: CI pipeline
   - [ ] Create `.github/workflows/ci.yml` to run ruff, mypy, pytest on push/PR
-  - [ ] Cache deps; matrix Python 3.11 (and optional 3.12)
+  - [ ] Cache deps; matrix Python 3.12 (and optional 3.11)
   - [ ] ✅ DoD: CI succeeds on initial commit
 
 ### A2 — App Factory & Config
