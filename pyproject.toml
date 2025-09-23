@@ -31,6 +31,9 @@ dependencies = [
 # Allow uv to understand project metadata
 managed = true
 
+[tool.setuptools]
+packages = []
+
 [tool.pytest.ini_options]
 # Placeholder to ensure pytest discovers tests later
 addopts = "-q"
