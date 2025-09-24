@@ -1,0 +1,9 @@
+---
+description: Best practices for FastAPI applications
+globs: **/*.{py}
+---
+- Use type hints for all function parameters and return types.
+- Implement dependency injection for reusable components.
+- Utilize Pydantic models for data validation and serialization.
+- Handle exceptions globally with custom exception handlers.
+- Use async functions for I/O-bound operations to improve performance.

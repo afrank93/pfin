@@ -1,0 +1,10 @@
+---
+description: Best practices for PDF generation with WeasyPrint
+globs: **/*.html
+alwaysApply: true
+---
+- Use semantic HTML for better PDF rendering.
+- Optimize CSS for print by using print-specific styles.
+- Test PDF output across different browsers for consistency.
+- Handle large documents by paginating content where necessary.
+- Ensure that all resources (fonts, images) are accessible in the PDF context.

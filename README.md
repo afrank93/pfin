@@ -23,7 +23,7 @@ uv run pytest -q
 
 ## Lint
 ```bash
-uv run ruff check
+uv run flake8 .
 ```
 
 ## Type Check

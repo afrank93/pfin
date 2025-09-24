@@ -1,0 +1,10 @@
+[33m09de584[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Update todo.md: Mark A3.2 and A4.1 as complete
+[33m3a36858[m Complete A3.2 and A4.1: Add startup DB init and health integration test
+[33m2072883[m Update todo.md: Mark completed A1-A3.1 tasks, identify remaining work
+[33m5cd0ff4[m A3.1: Define SQLModel models in app/models.py (auto via agent)
+[33macb5a3a[m A2.2: Add SQLModel engine and get_session dependency (auto via agent)
+[33m1faa902[m A2.1: Add FastAPI app factory with /api/health and Settings (auto via agent)
+[33mb60d0d9[m A1.2: Add GitHub Actions CI (ruff, mypy, pytest) on Python 3.12 with uv cache (auto via agent)
+[33mc30afd1[m A1.1: Lint config and packaging tweaks for uv sync (auto via agent)
+[33m8bc4ad8[m A1.1: Create skeleton directories with .gitkeep (auto via agent)
+[33me71cdaf[m A1.1: Add pyproject.toml, base configs, and tooling (auto via agent)

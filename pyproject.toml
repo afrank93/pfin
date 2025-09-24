@@ -25,6 +25,7 @@ dependencies = [
   "ruff",
   "mypy",
   "types-setuptools",
+  "flake8",
 ]
 
 [tool.uv]

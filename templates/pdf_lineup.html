@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ template.name }} - Lineup</title>
+    <style>
+        /* Print-specific styles */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+                font-size: 12px;
+                line-height: 1.4;
+                color: #000;
+                background: #fff;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            .page-break {
+                page-break-before: always;
+            }
+            
+            .avoid-break {
+                page-break-inside: avoid;
+            }
+        }
+        
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #fff;
+            color: #000;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+        }
+        
+        .header h1 {
+            margin: 0 0 5px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .header .team-info {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
+        }
+        
+        .header .template-info {
+            font-size: 14px;
+            color: #888;
+            margin: 5px 0 0 0;
+        }
+        
+        .lineup-section {
+            margin-bottom: 25px;
+            page-break-inside: avoid;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            background: #f0f0f0;
+            border-left: 4px solid #000;
+        }
+        
+        .forwards .section-title {
+            border-left-color: #007bff;
+        }
+        
+        .defense .section-title {
+            border-left-color: #28a745;
+        }
+        
+        .goalies .section-title {
+            border-left-color: #ffc107;
+        }
+        
+        .lineup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .line-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            background: #fafafa;
+        }
+        
+        .line-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-align: center;
+            background: #e9ecef;
+            padding: 3px;
+            border-radius: 3px;
+        }
+        
+        .player-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            padding: 3px 0;
+        }
+        
+        .player-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .position-label {
+            font-weight: bold;
+            width: 20px;
+            text-align: center;
+            font-size: 11px;
+        }
+        
+        .player-name {
+            flex: 1;
+            margin: 0 10px;
+            font-size: 12px;
+        }
+        
+        .jersey-number {
+            font-weight: bold;
+            background: #000;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        .empty-slot {
+            color: #999;
+            font-style: italic;
+            font-size: 11px;
+        }
+        
+        .notes-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .notes-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .notes-content {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 3px;
+            border-left: 3px solid #007bff;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 10px;
+            color: #666;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        
+        /* Print button (hidden in print) */
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+        
+        .print-button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Print Button (hidden in print) -->
+    <button class="print-button no-print" onclick="window.print()">
+        🖨️ Print Lineup
+    </button>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>{{ template.name }}</h1>
+        <p class="team-info">{{ team.name }} - {{ team.season }}</p>
+        <p class="template-info">
+            Generated on {{ now.strftime('%B %d, %Y at %I:%M %p') }}
+            {% if template.date_saved %}
+                | Saved on {{ template.date_saved.strftime('%B %d, %Y at %I:%M %p') }}
+            {% endif %}
+        </p>
+    </div>
+
+    <!-- Forwards Section -->
+    <div class="lineup-section forwards">
+        <div class="section-title">FORWARDS</div>
+        <div class="lineup-grid">
+            {% for line_num in range(1, 5) %}
+            <div class="line-card">
+                <div class="line-title">Line {{ line_num }}</div>
+                
+                <!-- Left Wing -->
+                <div class="player-row">
+                    <span class="position-label">LW</span>
+                    <span class="player-name">
+                        {% set lw_slot = slots_by_type.FWD[line_num-1][0] if slots_by_type.FWD[line_num-1] and slots_by_type.FWD[line_num-1]|length > 0 else None %}
+                        {% if lw_slot and lw_slot.player %}
+                            {{ lw_slot.player.name }}
+                        {% else %}
+                            <span class="empty-slot">Empty</span>
+                        {% endif %}
+                    </span>
+                    {% if lw_slot and lw_slot.player and lw_slot.player.jersey %}
+                        <span class="jersey-number">{{ lw_slot.player.jersey }}</span>
+                    {% else %}
+                        <span class="jersey-number">-</span>
+                    {% endif %}
+                </div>
+                
+                <!-- Center -->
+                <div class="player-row">
+                    <span class="position-label">C</span>
+                    <span class="player-name">
+                        {% set c_slot = slots_by_type.FWD[line_num-1][1] if slots_by_type.FWD[line_num-1] and slots_by_type.FWD[line_num-1]|length > 1 else None %}
+                        {% if c_slot and c_slot.player %}
+                            {{ c_slot.player.name }}
+                        {% else %}
+                            <span class="empty-slot">Empty</span>
+                        {% endif %}
+                    </span>
+                    {% if c_slot and c_slot.player and c_slot.player.jersey %}
+                        <span class="jersey-number">{{ c_slot.player.jersey }}</span>
+                    {% else %}
+                        <span class="jersey-number">-</span>
+                    {% endif %}
+                </div>
+                
+                <!-- Right Wing -->
+                <div class="player-row">
+                    <span class="position-label">RW</span>
+                    <span class="player-name">
+                        {% set rw_slot = slots_by_type.FWD[line_num-1][2] if slots_by_type.FWD[line_num-1] and slots_by_type.FWD[line_num-1]|length > 2 else None %}
+                        {% if rw_slot and rw_slot.player %}
+                            {{ rw_slot.player.name }}
+                        {% else %}
+                            <span class="empty-slot">Empty</span>
+                        {% endif %}
+                    </span>
+                    {% if rw_slot and rw_slot.player and rw_slot.player.jersey %}
+                        <span class="jersey-number">{{ rw_slot.player.jersey }}</span>
+                    {% else %}
+                        <span class="jersey-number">-</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Defense Section -->
+    <div class="lineup-section defense">
+        <div class="section-title">DEFENSE</div>
+        <div class="lineup-grid">
+            {% for pair_num in range(1, 4) %}
+            <div class="line-card">
+                <div class="line-title">Pair {{ pair_num }}</div>
+                
+                <!-- Left Defense -->
+                <div class="player-row">
+                    <span class="position-label">LD</span>
+                    <span class="player-name">
+                        {% set ld_slot = slots_by_type.DEF[pair_num-1][0] if slots_by_type.DEF[pair_num-1] and slots_by_type.DEF[pair_num-1]|length > 0 else None %}
+                        {% if ld_slot and ld_slot.player %}
+                            {{ ld_slot.player.name }}
+                        {% else %}
+                            <span class="empty-slot">Empty</span>
+                        {% endif %}
+                    </span>
+                    {% if ld_slot and ld_slot.player and ld_slot.player.jersey %}
+                        <span class="jersey-number">{{ ld_slot.player.jersey }}</span>
+                    {% else %}
+                        <span class="jersey-number">-</span>
+                    {% endif %}
+                </div>
+                
+                <!-- Right Defense -->
+                <div class="player-row">
+                    <span class="position-label">RD</span>
+                    <span class="player-name">
+                        {% set rd_slot = slots_by_type.DEF[pair_num-1][1] if slots_by_type.DEF[pair_num-1] and slots_by_type.DEF[pair_num-1]|length > 1 else None %}
+                        {% if rd_slot and rd_slot.player %}
+                            {{ rd_slot.player.name }}
+                        {% else %}
+                            <span class="empty-slot">Empty</span>
+                        {% endif %}
+                    </span>
+                    {% if rd_slot and rd_slot.player and rd_slot.player.jersey %}
+                        <span class="jersey-number">{{ rd_slot.player.jersey }}</span>
+                    {% else %}
+                        <span class="jersey-number">-</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Goalies Section -->
+    <div class="lineup-section goalies">
+        <div class="section-title">GOALIES</div>
+        <div class="lineup-grid">
+            <div class="line-card">
+                <div class="line-title">Starter</div>
+                <div class="player-row">
+                    <span class="position-label">G</span>
+                    <span class="player-name">
+                        {% set starter_slot = slots_by_type.G[0] if slots_by_type.G and slots_by_type.G|length > 0 else None %}
+                        {% if starter_slot and starter_slot.player %}
+                            {{ starter_slot.player.name }}
+                        {% else %}
+                            <span class="empty-slot">Empty</span>
+                        {% endif %}
+                    </span>
+                    {% if starter_slot and starter_slot.player and starter_slot.player.jersey %}
+                        <span class="jersey-number">{{ starter_slot.player.jersey }}</span>
+                    {% else %}
+                        <span class="jersey-number">-</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="line-card">
+                <div class="line-title">Backup</div>
+                <div class="player-row">
+                    <span class="position-label">G</span>
+                    <span class="player-name">
+                        {% set backup_slot = slots_by_type.G[1] if slots_by_type.G and slots_by_type.G|length > 1 else None %}
+                        {% if backup_slot and backup_slot.player %}
+                            {{ backup_slot.player.name }}
+                        {% else %}
+                            <span class="empty-slot">Empty</span>
+                        {% endif %}
+                    </span>
+                    {% if backup_slot and backup_slot.player and backup_slot.player.jersey %}
+                        <span class="jersey-number">{{ backup_slot.player.jersey }}</span>
+                    {% else %}
+                        <span class="jersey-number">-</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notes Section -->
+    {% if template.notes %}
+    <div class="notes-section">
+        <div class="notes-title">Notes:</div>
+        <div class="notes-content">{{ template.notes }}</div>
+    </div>
+    {% endif %}
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Elite Minor Hockey Coach App - {{ now.strftime('%Y') }}</p>
+    </div>
+</body>
+</html>

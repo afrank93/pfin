@@ -1,0 +1,10 @@
+---
+description: Best practices for Jinja templating
+globs: **/*.html
+alwaysApply: true
+---
+- Use template inheritance to avoid code duplication.
+- Keep logic out of templates; use context variables instead.
+- Utilize filters and macros for reusable template components.
+- Sanitize user inputs to prevent XSS attacks.
+- Organize templates in a clear directory structure for maintainability.

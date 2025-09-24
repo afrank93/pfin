@@ -1,0 +1,10 @@
+---
+description: Best practices for using SortableJS
+globs: **/*.js
+alwaysApply: true
+---
+- Use the `onEnd` event to handle changes after sorting.
+- Implement drag-and-drop feedback for better user experience.
+- Keep the DOM updates minimal to enhance performance.
+- Use `sortable.options` to configure behavior according to your needs.
+- Ensure accessibility by providing keyboard navigation support.

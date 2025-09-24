@@ -1,0 +1,54 @@
+Metadata-Version: 2.4
+Name: coach-app
+Version: 0.1.0
+Summary: Elite Minor Hockey Coach App — MVP
+Author: Coach App Team
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi
+Requires-Dist: uvicorn[standard]
+Requires-Dist: sqlmodel
+Requires-Dist: jinja2
+Requires-Dist: python-multipart
+Requires-Dist: weasyprint
+Requires-Dist: pydantic-settings
+Requires-Dist: httpx
+Requires-Dist: pytest
+Requires-Dist: pytest-asyncio
+Requires-Dist: ruff
+Requires-Dist: mypy
+Requires-Dist: types-setuptools
+Requires-Dist: flake8
+
+# Elite Minor Hockey Coach App — MVP
+
+Local FastAPI app to manage a youth hockey team roster and lineups.
+
+## Requirements
+- Python 3.12+
+- uv (installed): https://astral.sh/uv
+
+## Setup
+```bash
+uv sync
+```
+
+## Run (dev)
+```bash
+uv run uvicorn app.main:app --reload
+```
+
+## Test
+```bash
+uv run pytest -q
+```
+
+## Lint
+```bash
+uv run flake8 .
+```
+
+## Type Check
+```bash
+uv run mypy
+```

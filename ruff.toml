@@ -1,7 +1,7 @@
-line-length = 100
+line-length = 88
 [lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
-ignore = []
+ignore = ["B008", "E402"]  # Ignore B008 for FastAPI Depends() usage, E402 for test path setup
 exclude = [
   ".git",
   ".venv",

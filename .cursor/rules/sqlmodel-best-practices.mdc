@@ -1,0 +1,11 @@
+---
+name: sqlmodel-best-practices.mdc
+description: Best practices for SQLModel usage
+globs: **/*.{py}
+---
+
+- Define models with clear relationships and constraints.
+- Use `Field` for additional validation and metadata.
+- Implement methods for common queries within models.
+- Use migrations for schema changes to maintain data integrity.
+- Keep database interactions within service layers for better separation of concerns.

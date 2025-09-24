@@ -1,0 +1,10 @@
+---
+description: Best practices for testing in Python
+globs: **/*_test.py
+alwaysApply: true
+---
+- Use pytest for a robust testing framework.
+- Write unit tests for individual functions and methods.
+- Implement integration tests to cover interactions between components.
+- Use fixtures for setup and teardown of test environments.
+- Aim for high test coverage but prioritize meaningful tests over quantity.

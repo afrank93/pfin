@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% block title %}{{ template.name }} - Lineup Builder{% endblock %}
+
+{% block extra_head %}
+<!-- SortableJS -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h2">
+                    <i class="bi bi-diagram-3 me-2"></i>
+                    {{ template.name }}
+                </h1>
+                <p class="text-muted mb-0">{{ team.name }} - {{ team.season }}</p>
+                {% if template.notes %}
+                    <p class="text-muted small">{{ template.notes }}</p>
+                {% endif %}
+            </div>
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-success" onclick="saveLineup()">
+                    <i class="bi bi-check-circle me-1"></i>Save Lineup
+                </button>
+                <button type="button" class="btn btn-outline-secondary" onclick="clearLineup()">
+                    <i class="bi bi-x-circle me-1"></i>Clear All
+                </button>
+                <a href="/teams/{{ team.id }}/lineups" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left me-1"></i>Back to Lineups
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Warnings Banner -->
+<div id="warningsBanner" class="alert alert-warning d-none" role="alert">
+    <h6 class="alert-heading">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        Lineup Warnings
+    </h6>
+    <ul id="warningsList" class="mb-0"></ul>
+</div>
+
+<div class="row">
+    <!-- Available Players Panel -->
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-people me-2"></i>
+                    Available Players
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div id="availablePlayers" class="list-group list-group-flush">
+                    {% for player in available_players %}
+                    <div class="list-group-item player-card" 
+                         data-player-id="{{ player.id }}"
+                         data-player-name="{{ player.name }}"
+                         data-player-position="{{ player.position }}"
+                         data-player-jersey="{{ player.jersey or '' }}"
+                         data-player-status="{{ player.status }}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">
+                                    {% if player.jersey %}
+                                        <span class="badge bg-primary me-2">{{ player.jersey }}</span>
+                                    {% endif %}
+                                    {{ player.name }}
+                                </h6>
+                                <small class="text-muted">
+                                    <span class="badge position-{{ player.position.lower() }} me-1">
+                                        {{ player.position }}
+                                    </span>
+                                    <span class="badge status-{{ player.status.lower() }}">
+                                        {{ player.status }}
+                                    </span>
+                                </small>
+                            </div>
+                            <i class="bi bi-grip-vertical text-muted"></i>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                {% if not available_players %}
+                <div class="text-center py-4">
+                    <i class="bi bi-people text-muted" style="font-size: 2rem;"></i>
+                    <p class="text-muted mt-2">No available players</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Lineup Slots Panel -->
+    <div class="col-md-8">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-grid me-2"></i>
+                    Lineup Slots
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Forward Lines -->
+                <div class="mb-4">
+                    <h6 class="text-primary mb-3">
+                        <i class="bi bi-arrow-right me-2"></i>Forward Lines
+                    </h6>
+                    <div class="row">
+                        {% for line_num in range(1, 5) %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-primary">
+                                <div class="card-header bg-primary text-white py-2">
+                                    <h6 class="mb-0">Line {{ line_num }}</h6>
+                                </div>
+                                <div class="card-body p-2">
+                                    <div class="row g-1">
+                                        <div class="col-4">
+                                            <div class="slot-container" 
+                                                 data-slot-type="FWD" 
+                                                 data-slot-label="FWD{{ line_num }} LW"
+                                                 data-slot-id="{{ slots_by_type.FWD[line_num-1][0].id if slots_by_type.FWD[line_num-1] else '' }}">
+                                                <div class="slot-card slot-empty">
+                                                    <small class="text-muted">LW</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="slot-container" 
+                                                 data-slot-type="FWD" 
+                                                 data-slot-label="FWD{{ line_num }} C"
+                                                 data-slot-id="{{ slots_by_type.FWD[line_num-1][1].id if slots_by_type.FWD[line_num-1] else '' }}">
+                                                <div class="slot-card slot-empty">
+                                                    <small class="text-muted">C</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="slot-container" 
+                                                 data-slot-type="FWD" 
+                                                 data-slot-label="FWD{{ line_num }} RW"
+                                                 data-slot-id="{{ slots_by_type.FWD[line_num-1][2].id if slots_by_type.FWD[line_num-1] else '' }}">
+                                                <div class="slot-card slot-empty">
+                                                    <small class="text-muted">RW</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Defense Pairs -->
+                <div class="mb-4">
+                    <h6 class="text-success mb-3">
+                        <i class="bi bi-shield me-2"></i>Defense Pairs
+                    </h6>
+                    <div class="row">
+                        {% for pair_num in range(1, 4) %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-success">
+                                <div class="card-header bg-success text-white py-2">
+                                    <h6 class="mb-0">Pair {{ pair_num }}</h6>
+                                </div>
+                                <div class="card-body p-2">
+                                    <div class="row g-1">
+                                        <div class="col-6">
+                                            <div class="slot-container" 
+                                                 data-slot-type="DEF" 
+                                                 data-slot-label="DEF{{ pair_num }} L"
+                                                 data-slot-id="{{ slots_by_type.DEF[pair_num-1][0].id if slots_by_type.DEF[pair_num-1] else '' }}">
+                                                <div class="slot-card slot-empty">
+                                                    <small class="text-muted">L</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="slot-container" 
+                                                 data-slot-type="DEF" 
+                                                 data-slot-label="DEF{{ pair_num }} R"
+                                                 data-slot-id="{{ slots_by_type.DEF[pair_num-1][1].id if slots_by_type.DEF[pair_num-1] else '' }}">
+                                                <div class="slot-card slot-empty">
+                                                    <small class="text-muted">R</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Goalies -->
+                <div class="mb-4">
+                    <h6 class="text-warning mb-3">
+                        <i class="bi bi-shield-check me-2"></i>Goalies
+                    </h6>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-warning">
+                                <div class="card-header bg-warning text-dark py-2">
+                                    <h6 class="mb-0">Starter</h6>
+                                </div>
+                                <div class="card-body p-2">
+                                    <div class="slot-container" 
+                                         data-slot-type="G" 
+                                         data-slot-label="G Starter"
+                                         data-slot-id="{{ slots_by_type.G[0].id if slots_by_type.G else '' }}">
+                                        <div class="slot-card slot-empty">
+                                            <small class="text-muted">Starter</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-warning">
+                                <div class="card-header bg-warning text-dark py-2">
+                                    <h6 class="mb-0">Backup</h6>
+                                </div>
+                                <div class="card-body p-2">
+                                    <div class="slot-container" 
+                                         data-slot-type="G" 
+                                         data-slot-label="G Backup"
+                                         data-slot-id="{{ slots_by_type.G[1].id if slots_by_type.G|length > 1 else '' }}">
+                                        <div class="slot-card slot-empty">
+                                            <small class="text-muted">Backup</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', path='/js/lineup.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize lineup builder
+    LineupBuilder.init({
+        templateId: {{ template.id }},
+        teamId: {{ team.id }},
+        slots: {{ slots|tojson }},
+        availablePlayers: {{ available_players|tojson }}
+    });
+});
+</script>
+{% endblock %}

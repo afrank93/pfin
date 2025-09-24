@@ -1,0 +1,21 @@
+[flake8]
+# Maximum line length
+max-line-length = 79
+
+# Only check for essential errors - ignore style issues
+ignore = 
+    E402,  # Module level import not at top of file
+    B008,  # Do not perform function call in argument defaults
+    W503,  # Line break before binary operator (conflicts with W504)
+
+# Exclude directories
+exclude = 
+    .git,
+    __pycache__,
+    .venv,
+    venv,
+    build,
+    dist,
+    .pytest_cache,
+    .mypy_cache,
+    .ruff_cache

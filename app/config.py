@@ -8,7 +8,7 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     data_dir: Path = Path.home() / ".coach_app"
-    db_path: Path = (Path.home() / ".coach_app" / "data.db")
+    db_path: Path = Path.home() / ".coach_app" / "data.db"
 
 
 @lru_cache(maxsize=1)

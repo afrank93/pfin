@@ -30,8 +30,8 @@ jobs:
       - name: Sync dependencies (editable install)
         run: uv sync --all-extras --dev
 
-      - name: Lint (ruff)
-        run: uv run ruff check
+      - name: Lint (flake8)
+        run: uv run flake8 .
 
       - name: Type check (mypy)
         run: uv run mypy .

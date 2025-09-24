@@ -1,0 +1,10 @@
+---
+description: Best practices for Bootstrap styling
+globs: **/*.html
+alwaysApply: true
+---
+- Use Bootstrap's grid system for responsive layouts.
+- Leverage utility classes for spacing and alignment.
+- Customize Bootstrap variables for consistent theming.
+- Ensure accessibility by using ARIA roles and attributes.
+- Keep custom CSS minimal and override Bootstrap styles only when necessary.
