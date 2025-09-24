@@ -9,7 +9,6 @@ _Updated: 2025-09-23_
 - [x] Create a new private repo and push an empty `main` branch
 - [x] Decide Python version (>=3.11) and install **uv**
 - [x] Enable branch protection on `main` (PRs required, status checks required)
-- [ ] Add a project board with Milestones A–F
 
 ---
 
@@ -53,7 +52,24 @@ _Updated: 2025-09-23_
   - [x] TestClient GET `/api/health` == 200 with `{"status":"ok"}`
   - [x] ✅ DoD: Test passes locally and in CI
 
----
+### A5 — Code Review Fixes (Critical Issues)
+- [x] A5.1: Fix configuration redundancy
+  - [x] Remove redundant `db_path` field from `app/config.py`, compute dynamically
+  - [x] ✅ DoD: Configuration is clean and non-redundant
+- [x] A5.2: Consolidate session management
+  - [x] Remove duplicate `get_session` function from `app/db.py`, keep only `session_scope`
+  - [x] ✅ DoD: Single consistent session management pattern
+- [x] A5.3: Fix app factory
+  - [x] Add router mounting and database initialization to `app/main.py`
+  - [x] ✅ DoD: App properly initializes database and mounts routers
+- [x] A5.4: Fix package configuration
+  - [x] Specify correct packages in `pyproject.toml` setuptools section
+  - [x] ✅ DoD: Package discovery works correctly
+- [x] A5.5: Fix test structure
+  - [x] Add `__init__.py` files to all test directories
+  - [x] Remove conflicting black configuration from `.pre-commit-config.yaml`
+  - [x] Add type annotations to `get_engine()` function
+  - [x] ✅ DoD: All tests run without import errors, pre-commit passes
 
 ## Milestone B — Teams & Players API
 ### B1 — Teams
@@ -199,9 +215,8 @@ _Updated: 2025-09-23_
 - [ ] Inline roster CSV mapping (flex headers)
 - [ ] Undo/redo in lineup builder
 
----
 
-## Operational Notes
+## Notes
 - [ ] Keep PRs to one conceptual change
 - [ ] Each step compiles, runs, and/or has tests
 - [ ] Update README as features land
