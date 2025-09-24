@@ -7,51 +7,69 @@ _Updated: 2025-09-23_
 
 ## 0) Bootstrap & Housekeeping
 - [x] Create a new private repo and push an empty `main` branch
-- [ ] Decide Python version (>=3.11) and install **uv**
+- [x] Decide Python version (>=3.11) and install **uv**
 - [x] Enable branch protection on `main` (PRs required, status checks required)
-- [ ] Add a project board with Milestones A–F
 
 ---
 
 ## Milestone A — Scaffolding & Database
 ### A1 — Repo & Quality Gates
-- [ ] A1.1: Initialize project + toolchain
-  - [ ] Add `pyproject.toml` with deps: fastapi, uvicorn[standard], sqlmodel, jinja2, python-multipart, weasyprint, pydantic-settings, httpx, pytest, pytest-asyncio, ruff, mypy
-  - [ ] Add dev tooling: black (optional), pre-commit, types-setuptools
-  - [ ] Create skeleton dirs: `app/`, `routers/`, `services/`, `utils/`, `templates/`, `static/css`, `static/js`, `tests/unit`, `tests/integration`, `tests/e2e`
-  - [ ] Add configs: `.editorconfig`, `pytest.ini`, `ruff.toml`, `mypy.ini`, `.pre-commit-config.yaml`
-  - [ ] Add `README.md` with run/test instructions
-  - [ ] ✅ DoD: `uv run ruff check` passes; `uv run mypy` passes; `uv run pytest` runs with 0 tests
-- [ ] A1.2: CI pipeline
-  - [ ] Create `.github/workflows/ci.yml` to run ruff, mypy, pytest on push/PR
-  - [ ] Cache deps; matrix Python 3.12 (and optional 3.11)
-  - [ ] ✅ DoD: CI succeeds on initial commit
+- [x] A1.1: Initialize project + toolchain
+  - [x] Add `pyproject.toml` with deps: fastapi, uvicorn[standard], sqlmodel, jinja2, python-multipart, weasyprint, pydantic-settings, httpx, pytest, pytest-asyncio, ruff, mypy
+  - [x] Add dev tooling: black (optional), pre-commit, types-setuptools
+  - [x] Create skeleton dirs: `app/`, `routers/`, `services/`, `utils/`, `templates/`, `static/css`, `static/js`, `tests/unit`, `tests/integration`, `tests/e2e`
+  - [x] Add configs: `.editorconfig`, `pytest.ini`, `ruff.toml`, `mypy.ini`, `.pre-commit-config.yaml`
+  - [x] Add `README.md` with run/test instructions
+  - [x] ✅ DoD: `uv run ruff check` passes; `uv run mypy` passes; `uv run pytest` runs with 0 tests
+- [x] A1.2: CI pipeline
+  - [x] Create `.github/workflows/ci.yml` to run ruff, mypy, pytest on push/PR
+  - [x] Cache deps; matrix Python 3.12 (and optional 3.11)
+  - [x] ✅ DoD: CI succeeds on initial commit
 
 ### A2 — App Factory & Config
-- [ ] A2.1: App factory and health
-  - [ ] `app/main.py` FastAPI factory; mount routers stub; `/api/health` route → `{"status":"ok"}`
-  - [ ] `app/config.py` `Settings` using pydantic-settings (data_dir, db_path defaults to `~/.coach_app/data.db`)
-  - [ ] ✅ DoD: `uvicorn app.main:app --reload` boots; GET `/api/health` returns 200 OK
-- [ ] A2.2: DB engine/session
-  - [ ] `app/db.py` SQLModel engine from `Settings.db_path`
-  - [ ] `get_session()` dependency for routers/services
-  - [ ] ✅ DoD: Importing dependency works; no runtime errors
+- [x] A2.1: App factory and health
+  - [x] `app/main.py` FastAPI factory; mount routers stub; `/api/health` route → `{"status":"ok"}`
+  - [x] `app/config.py` `Settings` using pydantic-settings (data_dir, db_path defaults to `~/.coach_app/data.db`)
+  - [x] ✅ DoD: `uvicorn app.main:app --reload` boots; GET `/api/health` returns 200 OK
+- [x] A2.2: DB engine/session
+  - [x] `app/db.py` SQLModel engine from `Settings.db_path`
+  - [x] `get_session()` dependency for routers/services
+  - [x] ✅ DoD: Importing dependency works; no runtime errors
 
 ### A3 — Domain Models
-- [ ] A3.1: Define SQLModel models in `app/models.py`
-  - [ ] Team(id, name, season, created_at), unique(name, season)
-  - [ ] Player(id, team_id FK, name, position Enum[F,D,G], jersey 1–99 nullable, hand Enum[L,R] nullable, birthdate, email, phone, status Enum[Active, Affiliate, Injured, Inactive], created_at)
-  - [ ] LineupTemplate(id, team_id FK, name, notes, date_saved, created_at)
-  - [ ] LineupSlot(id, template_id FK, slot_type Enum[FWD, DEF, G], slot_label, order_index, player_id FK nullable)
-  - [ ] ✅ DoD: `SQLModel.metadata.create_all(engine)` succeeds
-- [ ] A3.2: Startup DB init
-  - [ ] On startup event, call `create_all(engine)` (Alembic deferred)
-  - [ ] ✅ DoD: First run creates DB file at `Settings.db_path`
+- [x] A3.1: Define SQLModel models in `app/models.py`
+  - [x] Team(id, name, season, created_at), unique(name, season)
+  - [x] Player(id, team_id FK, name, position Enum[F,D,G], jersey 1–99 nullable, hand Enum[L,R] nullable, birthdate, email, phone, status Enum[Active, Affiliate, Injured, Inactive], created_at)
+  - [x] LineupTemplate(id, team_id FK, name, notes, date_saved, created_at)
+  - [x] LineupSlot(id, template_id FK, slot_type Enum[FWD, DEF, G], slot_label, order_index, player_id FK nullable)
+  - [x] ✅ DoD: `SQLModel.metadata.create_all(engine)` succeeds
+- [x] A3.2: Startup DB init
+  - [x] On startup event, call `create_all(engine)` (Alembic deferred)
+  - [x] ✅ DoD: First run creates DB file at `Settings.db_path`
 
 ### A4 — Smoke Tests
-- [ ] A4.1: Add `tests/integration/test_health.py`
-  - [ ] TestClient GET `/api/health` == 200 with `{"status":"ok"}`
-  - [ ] ✅ DoD: Test passes locally and in CI
+- [x] A4.1: Add `tests/integration/test_health.py`
+  - [x] TestClient GET `/api/health` == 200 with `{"status":"ok"}`
+  - [x] ✅ DoD: Test passes locally and in CI
+
+### A5 — Code Review Fixes (Critical Issues)
+- [x] A5.1: Fix configuration redundancy
+  - [x] Remove redundant `db_path` field from `app/config.py`, compute dynamically
+  - [x] ✅ DoD: Configuration is clean and non-redundant
+- [x] A5.2: Consolidate session management
+  - [x] Remove duplicate `get_session` function from `app/db.py`, keep only `session_scope`
+  - [x] ✅ DoD: Single consistent session management pattern
+- [x] A5.3: Fix app factory
+  - [x] Add router mounting and database initialization to `app/main.py`
+  - [x] ✅ DoD: App properly initializes database and mounts routers
+- [x] A5.4: Fix package configuration
+  - [x] Specify correct packages in `pyproject.toml` setuptools section
+  - [x] ✅ DoD: Package discovery works correctly
+- [x] A5.5: Fix test structure
+  - [x] Add `__init__.py` files to all test directories
+  - [x] Remove conflicting black configuration from `.pre-commit-config.yaml`
+  - [x] Add type annotations to `get_engine()` function
+  - [x] ✅ DoD: All tests run without import errors, pre-commit passes
 
 ---
 
@@ -199,9 +217,8 @@ _Updated: 2025-09-23_
 - [ ] Inline roster CSV mapping (flex headers)
 - [ ] Undo/redo in lineup builder
 
----
 
-## Operational Notes
+## Notes
 - [ ] Keep PRs to one conceptual change
 - [ ] Each step compiles, runs, and/or has tests
 - [ ] Update README as features land

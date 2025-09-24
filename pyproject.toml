@@ -32,7 +32,7 @@ dependencies = [
 managed = true
 
 [tool.setuptools]
-packages = []
+packages = ["app", "routers", "services", "utils", "tests"]
 
 [tool.pytest.ini_options]
 # Placeholder to ensure pytest discovers tests later
