@@ -44,14 +44,14 @@ _Updated: 2025-09-23_
   - [x] LineupTemplate(id, team_id FK, name, notes, date_saved, created_at)
   - [x] LineupSlot(id, template_id FK, slot_type Enum[FWD, DEF, G], slot_label, order_index, player_id FK nullable)
   - [x] ✅ DoD: `SQLModel.metadata.create_all(engine)` succeeds
-- [ ] A3.2: Startup DB init
-  - [ ] On startup event, call `create_all(engine)` (Alembic deferred)
-  - [ ] ✅ DoD: First run creates DB file at `Settings.db_path`
+- [x] A3.2: Startup DB init
+  - [x] On startup event, call `create_all(engine)` (Alembic deferred)
+  - [x] ✅ DoD: First run creates DB file at `Settings.db_path`
 
 ### A4 — Smoke Tests
-- [ ] A4.1: Add `tests/integration/test_health.py`
-  - [ ] TestClient GET `/api/health` == 200 with `{"status":"ok"}`
-  - [ ] ✅ DoD: Test passes locally and in CI
+- [x] A4.1: Add `tests/integration/test_health.py`
+  - [x] TestClient GET `/api/health` == 200 with `{"status":"ok"}`
+  - [x] ✅ DoD: Test passes locally and in CI
 
 ---
 
